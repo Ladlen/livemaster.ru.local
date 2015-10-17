@@ -18,18 +18,14 @@ CREATE TABLE cities
 ) CHARACTER SET cp1251;
 */
 
-ini_set('error_reporting', E_ALL);
+if (DEBUG)
+{
+    ini_set('error_reporting', E_ALL);
+}
+else
+{
 
-define('DATABASE', 'mySql');
-define('MYSQL_HOST', 'localhost');
-define('MYSQL_USER', 'root');
-define('MYSQL_PASS', 'temp123');
-define('MYSQL_DB', 'user_list');
-
-define('DATABASE_CLASS', DATABASE . 'DatabaseOperations');
-
-define('DEBUG', true);
-
+}
 
 /**
  * Class City
@@ -65,48 +61,59 @@ interface DatabaseOperations
     public function escape_string($string);
 }
 
-class mySqlDatabaseOperations implements DatabaseOperations
+class mySqliDatabaseOperations implements DatabaseOperations
 {
     protected static $mySqlLink;
 
     public function __construct()
     {
-        $this->mysql_prepare();
+        $this->mysqli_prepare();
     }
 
-    protected function mysql_prepare()
+    protected function mysqli_prepare()
     {
         if ( is_null(self::$mySqlLink) )
         {
-            self::$mySqlLink = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
-            if ( !self::$mySqlLink ) {
-                throw new Exception('Не установлено соединение с базой данных : ' . mysql_error(self::$mySqlLink));
+            self::$mySqlLink = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+            if (mysqli_connect_errno())
+            {
+                throw new Exception('Не установлено соединение с базой данных : ' . mysqli_error(self::$mySqlLink));
             }
-
-            $db_selected = mysql_select_db(MYSQL_DB, self::$mySqlLink);
-            if ( !$db_selected ) {
-                throw new Exception('Can\'t select database : ' . mysql_error(self::$mySqlLink));
+            $dbSelected = mysqli_select_db(self::$mySqlLink, MYSQL_DB);
+            if ( !$dbSelected ) {
+                throw new Exception('Не могу выбрать базу данных : ' . mysqli_error(self::$mySqlLink));
             }
         }
     }
 
+    /**
+     * Возвращает ассоциативный массив по результатам запроса.
+     *
+     * @param string $sql
+     * @return array
+     * @throws Exception
+     */
     public function query($sql)
     {
-        if ( !$res = mysql_query($sql, self::$mySqlLink) )
+        $ret = array();
+
+        if ( !$result = mysqli_query(self::$mySqlLink, $sql) )
         {
-            throw new Exception('Ошибка mysql : ' . mysql_error(self::$mySqlLink));
+            throw new Exception('Ошибка mysql : ' . mysqli_error(self::$mySqlLink));
         }
 
-        return $res;
+        if ( $rows = mysqli_fetch_assoc($result) )
+        {
+            $ret = $rows;
+        }
+        mysqli_free_result($result);
+
+        return $ret;
     }
 
     public function escape_string($string)
     {
-        $ret = mysql_real_escape_string($string, self::$mySqlLink);
-        if ( $ret === false )
-        {
-            throw new Exception('Ошибка mysql : ' . mysql_error(self::$mySqlLink));
-        }
+        $ret = mysqli_real_escape_string(self::$mySqlLink, $string);
         return $ret;
     }
 
@@ -120,7 +127,7 @@ class mySqlDatabaseOperations implements DatabaseOperations
         $ret = mysql_affected_rows(self::$mySqlLink);
         if ( $ret == -1 )
         {
-            throw new Exception('MySql error : ' . mysql_error(self::$mySqlLink));
+            throw new Exception('MySql error : ' . mysqli_error(self::$mySqlLink));
         }
         return $ret;
     }
@@ -130,7 +137,7 @@ class mySqlDatabaseOperations implements DatabaseOperations
         $ret = mysql_num_rows($res);
         if ( $ret === false )
         {
-            throw new Exception('MySql error : ' . mysql_error(self::$mySqlLink));
+            throw new Exception('MySql error : ' . mysqli_error(self::$mySqlLink));
         }
         return $ret;
     }
@@ -168,16 +175,38 @@ class User
      */
     public function __construct($id)
     {
-        echo "sdfdsf+++";
         $this->id = $id;
 
-        $db = new DATABASE_CLASS;
-        #$res = $db->query('SELECT * from user');
+        $className = DATABASE_CLASS;
+        $db = new $className;
+        $res = $db->query('SELECT * from user');
         echo "POS_2";
-        #print_r($res);
+        print_r($res);
     }
 }
-echo 'dfsd222f';
-$usr = new User(240);
+
+class Application
+{
+
+}
+
+echo 'POS_END';
+$user = new User(240);
+
+try
+{
+    new Application;
+}
+catch (Exception $e)
+{
+    if (DEBUG)
+    {
+        
+    }
+    else
+    {
+
+    }
+}
 
 exit;
