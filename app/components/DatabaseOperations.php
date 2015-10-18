@@ -2,6 +2,7 @@
 
 /**
  * Interface DatabaseOperations
+ *
  * Èםעונפויס הכÿ נאבמעû ס ÁÄ.
  */
 interface DatabaseOperations

@@ -27,6 +27,17 @@ class mySqliDatabaseOperations implements DatabaseOperations
         }
     }
 
+    protected function replaceAndClean($sql)
+    {
+        $args = func_get_args();
+        if(count($args) == 1)
+        {
+            return $args[0];
+        }
+        $query = array_shift($args);
+        return vsprintf($query, array_map(array(this, 'escape_string'), $args));
+    }
+
     /**
      * Возвращает ассоциативный массив по результатам запроса.
      *
@@ -38,7 +49,8 @@ class mySqliDatabaseOperations implements DatabaseOperations
     {
         $ret = array();
 
-        if ( !$result = mysqli_query(self::$mySqlLink, $sql) )
+        $query = call_user_func_array(array(this, 'replaceAndClean'), func_get_args());
+        if ( !$result = mysqli_query(self::$mySqlLink, $query) )
         {
             throw new Exception('Ошибка mysql : ' . mysqli_error(self::$mySqlLink));
         }

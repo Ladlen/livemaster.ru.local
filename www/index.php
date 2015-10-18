@@ -2,10 +2,10 @@
 
 /*
 CREATE DATABASE user_list CHARACTER SET cp1251;
-CREATE TABLE user
+CREATE TABLE users
 (
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-    `name` varchar(255) NOT NULL,
+    `name` varchar(30) NOT NULL,
     `age` DATETIME NOT NULL,
     `city_id` int(11) unsigned,
     PRIMARY KEY (`id`)
@@ -13,9 +13,12 @@ CREATE TABLE user
 CREATE TABLE cities
 (
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-    `name` varchar(255) NOT NULL,
+    `name` varchar(30) NOT NULL,
     PRIMARY KEY (`id`)
 ) CHARACTER SET cp1251;
+
+ALTER TABLE `users` ADD CONSTRAINT `user_city_id` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`);
+
 */
 
 if (DEBUG)
@@ -31,80 +34,18 @@ else
 define('APP_DIR', dirname(__FILE__) . '/../app/');
 
 require_once (APP_DIR . 'config.php');
-
-
-
-/**
- * Class City
- *
- * Содержит данные по городам.
- */
-class City
-{
-    /**
-     * @var int
-     */
-    protected $id;
-
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * Конструктор.
-     *
-     * @param int $id идентификатор города
-     */
-    public function __construct($id, $name)
-    {
-
-    }
-}
+require_once (APP_DIR . 'controllers/User.php');
 
 
 
 
 
 
-class User
-{
-    /**
-     * @var int
-     */
-    protected $id;
 
-    /**
-     * @var string
-     */
-    protected $name;
 
-    /**
-     * @var int
-     */
-    protected $age;
 
-    /**
-     * @var City
-     */
-    protected $city;
 
-    /**
-     * Конструктор.
-     *
-     * @param int $id идентификатор пользователя
-     */
-    public function __construct($id)
-    {
-        $this->id = $id;
 
-        $className = DATABASE_CLASS;
-        $db = new $className;
-        $res = $db->query('SELECT * from user');
-        echo "POS_2";
-        print_r($res);
-    }
-}
 
 class Application
 {
