@@ -5,7 +5,7 @@
  *
  * Данные по пользователю.
  */
-class UserModel
+class User
 {
     /**
      * @var int
@@ -39,6 +39,7 @@ class UserModel
         $className = DATABASE_CLASS;
         $db = new $className;
         $res = $db->query('SELECT * FROM user WHERE id=%s', $id);
+        //TODO: проверить проставляются ли скобки вокруг %s
         echo "POS_2";
         print_r($res);
     }

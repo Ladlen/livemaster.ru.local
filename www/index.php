@@ -52,7 +52,7 @@ class Application
 
 }
 
-echo 'POS_END';
+
 $user = new User(240);
 
 try
