@@ -1,5 +1,5 @@
 <?php
-print_r($userList);
+print_r($model);
 exit;
 ?>
 <div id="user_list">

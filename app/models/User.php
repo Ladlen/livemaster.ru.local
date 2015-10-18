@@ -1,5 +1,7 @@
 <?php
 
+require_once (APP_DIR . 'components/' . DATABASE_CLASS . '.php');
+
 /**
  * Class UserModel
  *
@@ -10,37 +12,54 @@ class User
     /**
      * @var int
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
      */
-    protected $name;
+    public $name;
 
     /**
      * @var int
      */
-    protected $age;
+    public $age;
 
     /**
      * @var City
      */
-    protected $city;
+    public $city;
+
+    /**
+     * @var array|null
+     */
+    public $allUsers;
 
     /**
      *  онструктор.
      *
      * @param int $id идентификатор пользовател€
      */
-    public function __construct($id)
+    public function __construct($id = null)
     {
-        $this->id = $id;
+        if($id)
+        {
+            $className = DATABASE_CLASS;
+            $db = new $className;
+            $res = $db->query('SELECT * FROM user WHERE id=%s', $id);
+            //TODO: проверить проставл€ютс€ ли скобки вокруг %s
+        }
+        else
+        {
+            // вернем всех пользователей
+        }
+    }
 
+    static public function GetAllUsers()
+    {
         $className = DATABASE_CLASS;
         $db = new $className;
-        $res = $db->query('SELECT * FROM user WHERE id=%s', $id);
-        //TODO: проверить проставл€ютс€ ли скобки вокруг %s
-        echo "POS_2";
-        print_r($res);
+        $res = $db->query('SELECT * FROM user');
+        self::$allUsers = $res;
+        return $res;
     }
 }

@@ -52,8 +52,8 @@ class Application
 
 }
 
-
-$user = new User(240);
+echo "+++++++";
+$user = new UserController();
 
 try
 {

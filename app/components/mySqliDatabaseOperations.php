@@ -35,7 +35,7 @@ class mySqliDatabaseOperations implements DatabaseOperations
             return $args[0];
         }
         $query = array_shift($args);
-        return vsprintf($query, array_map(array(this, 'escape_string'), $args));
+        return vsprintf($query, array_map(array($this, 'escape_string'), $args));
     }
 
     /**
@@ -47,15 +47,15 @@ class mySqliDatabaseOperations implements DatabaseOperations
      */
     public function query($sql)
     {
-        $ret = array();
+        $ret = new stdClass();
 
-        $query = call_user_func_array(array(this, 'replaceAndClean'), func_get_args());
+        $query = call_user_func_array(array($this, 'replaceAndClean'), func_get_args());
         if ( !$result = mysqli_query(self::$mySqlLink, $query) )
         {
             throw new Exception('Ошибка mysql : ' . mysqli_error(self::$mySqlLink));
         }
 
-        if ( $rows = mysqli_fetch_assoc($result) )
+        if ( $rows = mysqli_fetch_object($result) )
         {
             $ret = $rows;
         }
