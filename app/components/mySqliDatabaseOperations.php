@@ -41,8 +41,8 @@ class mySqliDatabaseOperations implements DatabaseOperations
     /**
      * Возвращает ассоциативный массив по результатам запроса.
      *
-     * @param string $sql
-     * @return array
+     * @param string $sql запрос SQL
+     * @return stdClass объект, в параметре rows будет содержать массив объектов с результатом
      * @throws Exception
      */
     public function query($sql)
@@ -55,10 +55,13 @@ class mySqliDatabaseOperations implements DatabaseOperations
             throw new Exception('Ошибка mysql : ' . mysqli_error(self::$mySqlLink));
         }
 
-        if ( $rows = mysqli_fetch_object($result) )
+        $allRows = array();
+        while ( $row = mysqli_fetch_object($result) )
         {
-            $ret = $rows;
+            $allRows[] = $row;
         }
+        $ret->rows = $allRows;
+
         mysqli_free_result($result);
 
         return $ret;
@@ -70,30 +73,4 @@ class mySqliDatabaseOperations implements DatabaseOperations
         return $ret;
     }
 
-    /*public function mysql_insert_id()
-    {
-        return mysql_insert_id(self::$mySqlLink);
-    }
-
-    public function mysql_affected_rows()
-    {
-        $ret = mysql_affected_rows(self::$mySqlLink);
-        if ( $ret == -1 )
-        {
-            throw new Exception('MySql error : ' . mysqli_error(self::$mySqlLink));
-        }
-        return $ret;
-    }
-
-    public function mysql_num_rows($res)
-    {
-        $ret = mysql_num_rows($res);
-        if ( $ret === false )
-        {
-            throw new Exception('MySql error : ' . mysqli_error(self::$mySqlLink));
-        }
-        return $ret;
-    }
-
-    */
 }
