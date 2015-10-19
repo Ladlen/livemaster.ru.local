@@ -1,12 +1,22 @@
 <?php
-
 /*
 CREATE DATABASE user_list CHARACTER SET cp1251;
+
 CREATE TABLE users
 (
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
     `name` varchar(30) NOT NULL,
-    `age` DATETIME NOT NULL,
+    `age` TINYINT unsigned,
+    `city_id` int(11) unsigned,
+    PRIMARY KEY (`id`)
+) CHARACTER SET cp1251;
+
+CREATE TABLE users
+(
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `name` varchar(30) NOT NULL,
+    -- `age` DATETIME NOT NULL,
+    `age` TINYINT unsigned,
     `city_id` int(11) unsigned,
     PRIMARY KEY (`id`)
 ) CHARACTER SET cp1251;
@@ -52,7 +62,6 @@ class Application
 
 }
 
-echo "+++++++";
 $user = new UserController();
 
 try

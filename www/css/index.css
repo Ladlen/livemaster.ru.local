@@ -1,0 +1,55 @@
+html, body
+{
+    overflow:hidden;
+    font-family:Helvetica,Arial,Verdana;
+    font-size:14px;
+}
+
+*
+{
+    margin:0;
+    padding:0;
+}
+
+#content
+{
+    position:relative;
+    margin:20px auto;
+    width:80%;
+    min-width:300px;
+}
+
+#list .id
+{
+    text-align:center;
+}
+
+.id
+{
+    width:9%;
+    display: inline-block;
+}
+
+.name
+{
+    width:39%;
+    display: inline-block;
+}
+
+.age
+{
+    width:9%;
+    display: inline-block;
+}
+
+.city
+{
+    width:19%;
+    display: inline-block;
+}
+
+.delete
+{
+    width:19%;
+    display: inline-block;
+}

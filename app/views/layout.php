@@ -7,6 +7,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
-<?php echo $content?>
+<div id="content">
+    <?php echo $content?>
+</div>
 </body>
 </html>
