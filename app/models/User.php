@@ -31,6 +31,12 @@ class User
     public $city;
 
     /**
+     * Название таблицы в БД.
+     * @var string
+     */
+    protected static $tableName = 'users';
+
+    /**
      * Конструктор.
      *
      * @param int $id идентификатор пользователя
@@ -39,15 +45,24 @@ class User
     {
         $className = DATABASE_CLASS;
         $db = new $className;
-        $res = $db->query('SELECT * FROM user WHERE id=%s', $id);
-        //TODO: проверить проставляются ли скобки вокруг %s
+        $res = $db->query('SELECT * FROM ' . self::$tableName . ' WHERE id=%s', $id);
     }
 
     static public function GetAllUsers()
     {
         $className = DATABASE_CLASS;
         $db = new $className;
-        $res = $db->query('SELECT * FROM users');
+        $res = $db->query("SELECT * FROM " . self::$tableName);
+        return $res;
+    }
+
+
+    public function updateElement($id, $name, $value)
+    {
+        $name = str_replace('`', '', $name);
+        $className = DATABASE_CLASS;
+        $db = new $className;
+        $res = $db->query('UPDATE ' . self::$tableName . " SET `$name`=%s WHERE id=%s", $value, $id);
         return $res;
     }
 }
