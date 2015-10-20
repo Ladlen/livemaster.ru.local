@@ -13,7 +13,7 @@ class mySqliDatabaseOperations implements DatabaseOperations
 
     protected function mysqli_prepare()
     {
-        if ( is_null(self::$mySqlLink) )
+        if (is_null(self::$mySqlLink))
         {
             self::$mySqlLink = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
             if (mysqli_connect_errno())
@@ -21,7 +21,8 @@ class mySqliDatabaseOperations implements DatabaseOperations
                 throw new Exception('Не установлено соединение с базой данных : ' . mysqli_error(self::$mySqlLink));
             }
             $dbSelected = mysqli_select_db(self::$mySqlLink, MYSQL_DB);
-            if ( !$dbSelected ) {
+            if (!$dbSelected)
+            {
                 throw new Exception('Не могу выбрать базу данных : ' . mysqli_error(self::$mySqlLink));
             }
         }
@@ -30,7 +31,7 @@ class mySqliDatabaseOperations implements DatabaseOperations
     protected function replaceAndClean($sql)
     {
         $args = func_get_args();
-        if(count($args) == 1)
+        if (count($args) == 1)
         {
             return $args[0];
         }
@@ -39,24 +40,24 @@ class mySqliDatabaseOperations implements DatabaseOperations
     }
 
     /**
-     * Возвращает ассоциативный массив по результатам запроса.
+     * Запрос вставки.
      *
      * @param string $sql запрос SQL
      * @return stdClass объект, в параметре rows будет содержать массив объектов с результатом
      * @throws Exception
      */
-    public function query($sql)
+    public function selectQuery($sql)
     {
         $ret = new stdClass();
 
         $query = call_user_func_array(array($this, 'replaceAndClean'), func_get_args());
-        if ( !$result = mysqli_query(self::$mySqlLink, $query) )
+        if (!$result = mysqli_query(self::$mySqlLink, $query))
         {
             throw new Exception('Ошибка mysql : ' . mysqli_error(self::$mySqlLink));
         }
 
         $allRows = array();
-        while ( $row = mysqli_fetch_object($result) )
+        while ($row = mysqli_fetch_object($result))
         {
             $allRows[] = $row;
         }
@@ -67,9 +68,27 @@ class mySqliDatabaseOperations implements DatabaseOperations
         return $ret;
     }
 
-    public function escape_string($string)
+    /**
+     * Запрос SQL.
+     *
+     * @param string $sql запрос SQL
+     * @return mixed успешность операции
+     * @throws Exception
+     */
+    public function query($sql)
+    {
+        $ret = false;
+
+        $query = call_user_func_array(array($this, 'replaceAndClean'), func_get_args());
+        $ret = mysqli_query(self::$mySqlLink, $query);
+
+        return $ret;
+    }
+
+    public function escape_string($string, $quotes = true)
     {
         $ret = mysqli_real_escape_string(self::$mySqlLink, $string);
+        $ret = $quotes ? "'$ret'" : $ret;
         return $ret;
     }
 
