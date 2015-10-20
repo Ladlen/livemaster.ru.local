@@ -2,7 +2,6 @@
     $(function () {
         var userList = {
             update: function(name, value, id) {
-                //alert(name + value);
                 var data = {"name": name, "value": value, "id": id};
                 $.ajax({type: "POST",
                     dataType: "json",
@@ -10,28 +9,39 @@
                     data: data,
                     success: function(data)
                     {
-                        alert(data);
+                        if(data.success)
+                        {
+                            $("#list .row[data-id=" + id + "] div." + name).html(value);
+                        }
+                        else
+                        {
+                            var content = $("#list .row[data-id=" + id + "] div." + name).html(value);
+                            $("#list .row[data-id=" + id + "] input." + name).html(content);
+                            alert('Произошла ошибка обновления');
+                        }
                     }
                 });
             }
         }
 
-        $('#list .name').click(function () {
+        $('#list .name, #list .age').click(function () {
+                var theClass = $(this).attr('class');
                 var dataId = $(this).parent().attr('data-id');
-                $("#list .row[data-id=" + dataId + "] div.name").hide();
-                $("#list .row[data-id=" + dataId + "] input.name").show();
-                $("#list .row[data-id=" + dataId + "] input.name").focus();
+                $("#list .row[data-id=" + dataId + "] div." + theClass).hide();
+                $("#list .row[data-id=" + dataId + "] input." + theClass).show();
+                $("#list .row[data-id=" + dataId + "] input." + theClass).focus();
             }
         ).blur(function () {
+                var theClass = $(this).attr('class');
                 var dataId = $(this).parent().attr('data-id');
-                $("#list .row[data-id=" + dataId + "] input.name").hide();
-                $("#list .row[data-id=" + dataId + "] div.name").show();
-                //alert($(this).val());
-                userList.update('name', $(this).val(), dataId);
+                $("#list .row[data-id=" + dataId + "] input." + theClass).hide();
+                $("#list .row[data-id=" + dataId + "] div." + theClass).show();
+                userList.update(theClass, $(this).val(), dataId);
             }).keyup(function (e) {
                 if (e.keyCode == 13) {
+                    var theClass = $(this).attr('class');
                     var dataId = $(this).parent().attr('data-id');
-                    $("#list .row[data-id=" + dataId + "] input.name").blur();
+                    $("#list .row[data-id=" + dataId + "] input." + theClass).blur();
                 }
             });
     });

@@ -45,14 +45,14 @@ class User
     {
         $className = DATABASE_CLASS;
         $db = new $className;
-        $res = $db->query('SELECT * FROM ' . self::$tableName . ' WHERE id=%s', $id);
+        $res = $db->selectQuery('SELECT * FROM ' . self::$tableName . ' WHERE id=%s', $id);
     }
 
     static public function GetAllUsers()
     {
         $className = DATABASE_CLASS;
         $db = new $className;
-        $res = $db->query("SELECT * FROM " . self::$tableName);
+        $res = $db->selectQuery("SELECT * FROM " . self::$tableName);
         return $res;
     }
 

@@ -13,31 +13,14 @@ class UserController extends Controller
 
     public function actionUpdate()
     {
-        $ret = array('success' => false);
+        $ret = ['success' => false];
 
         $model = new User();
-        $model->updateElement($_REQUEST['id'], $_REQUEST['name'], $_REQUEST['value']);
-
-        /*switch($_REQUEST['name'])
+        $win1251Value = mb_convert_encoding($_REQUEST['value'], 'cp1251', 'UTF-8');
+        if ($model->updateElement($_REQUEST['id'], $_REQUEST['name'], $win1251Value))
         {
-            case 'name':
-            {
-                $className = DATABASE_CLASS;
-                $db = new $className;
-                $res = $db->query('UPDATE users SET name=%s WHERE id=%s', $_REQUEST['value'], $_REQUEST['id']);
-                break;
-            }
-            case 'age':
-            {
-                break;
-            }
-            case 'city':
-            {
-                break;
-            }
-            default:
-                break;
-        }*/
+            $ret = ['success' => true, 'value' => $_REQUEST['value']];
+        }
 
         echo json_encode($ret);
         exit;
