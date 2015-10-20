@@ -2,13 +2,15 @@
 
 require_once (APP_DIR . 'controllers/Controller.php');
 require_once (APP_DIR . 'models/User.php');
+require_once (APP_DIR . 'models/City.php');
 
 class UserController extends Controller
 {
     public function actionIndex()
     {
         $model = User::GetAllUsers();
-        $this->render(APP_DIR . 'views/User.php', ['model' => $model->rows]);
+        $cities = City::GetAllCities();
+        $this->render(APP_DIR . 'views/User.php', ['model' => $model->rows, 'cities' => $cities->rows]);
     }
 
     public function actionUpdate()

@@ -1,5 +1,7 @@
 <?php
 
+require_once (APP_DIR . 'components/' . DATABASE_CLASS . '.php');
+
 /**
 * Class City
 *
@@ -8,22 +10,26 @@
 class City
 {
     /**
-    * @var int
-    */
-    protected $id;
-
-    /**
-    * @var string
-    */
-    protected $name;
+     * Название таблицы в БД.
+     * @var string
+     */
+    public static $tableName = 'cities';
 
     /**
     * Конструктор.
     *
     * @param int $id идентификатор города
-    */
+    *
     public function __construct($id, $name)
     {
 
+    }*/
+
+    static public function GetAllCities()
+    {
+        $className = DATABASE_CLASS;
+        $db = new $className;
+        $res = $db->selectQuery("SELECT * FROM " . self::$tableName);
+        return $res;
     }
 }
