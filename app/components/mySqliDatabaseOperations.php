@@ -78,10 +78,13 @@ class mySqliDatabaseOperations implements DatabaseOperations
      */
     public function query($sql)
     {
-        $ret = false;
-
         $query = call_user_func_array(array($this, 'replaceAndClean'), func_get_args());
         $ret = mysqli_query(self::$mySqlLink, $query);
+
+        if (mysqli_errno(self::$mySqlLink))
+        {
+            $ret = false;
+        }
 
         return $ret;
     }
