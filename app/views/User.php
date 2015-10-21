@@ -26,12 +26,13 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
 
                             var oldValue = $("#list .row[data-id=" + id + "] div." + name).text();
                             $("#list .row[data-id=" + id + "] input." + name).val(oldValue);
-                            /*$("#list .row[data-id=" + id + "] div." + name).hide();
-                            $("#list .row[data-id=" + id + "] input." + name).show();
-                            $("#list .row[data-id=" + id + "] input." + name).focus();*/
 
                             var msg = 'Произошла ошибка обновления:\n' + data.messages.join('\n');
                             alert(msg);
+
+                            $("#list .row[data-id=" + id + "] div." + name).hide();
+                            $("#list .row[data-id=" + id + "] input." + name).show();
+                            $("#list .row[data-id=" + id + "] input." + name).focus();
                         }
                     }
                 });
@@ -114,13 +115,11 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
                     if(data.success)
                     {
                         location.reload();
-                        /*$('#new_user').hide();
-                        var htmlNewRow = $('#blank-row').html();
-                        $('#list').append(htmlNewRow);*/
                     }
                     else
                     {
-                        alert('Не удалось создать пользователя');
+                        var msg = 'Не удалось создать пользователя:\n' + data.messages.join('\n');
+                        alert(msg);
                     }
                 }
             });
@@ -132,11 +131,11 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
 <div id="user_list">
     <div id="header">
         <div class="row">
-            <div class="id">ID</div>
-            <div class="name">Имя</div>
-            <div class="age">Возраст</div>
-            <div class="city_id">Город</div>
-            <div class="delete">Удалить</div>
+            <div class="id">ID</div><!--
+            --><div class="name">Имя</div><!--
+            --><div class="age">Возраст</div><!--
+            --><div class="city_id">Город</div><!--
+            --><div class="delete">Удалить</div>
         </div>
     </div>
     <div id="list">
@@ -148,7 +147,7 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
                 <div class="id"><?php echo htmlspecialchars($user->id, ENT_QUOTES, DOCUMENT_ENCODING) ?></div><!--
               --><input type="text" value="<?php echo htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) ?>" class="name" maxlength="30" style="display:none"/><!--
               --><div class="name" title="<?php echo CLICK_TO_MOD ?>"><?php echo $user->name ? htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) : '&nbsp;' ?></div><!--
-              --><input type="number" min="0" max="255" value="<?php echo $user->age ?>" class="age" maxlength="30" style="display:none"/><!--
+              --><input type="text" value="<?php echo $user->age ?>" class="age" maxlength="30" style="display:none"/><!--
               --><div class="age" title="<?php echo CLICK_TO_MOD ?>"><?php echo htmlspecialchars($user->age, ENT_QUOTES, DOCUMENT_ENCODING) ?></div><!--
               --><div class="city_id" title="<?php echo CLICK_TO_MOD ?>"><?php echo ($user->city_id == 0) ? 'Город не выбран' : $user->city_name ?></div><!--
               --><select style="display:none" class="city_id">
@@ -168,7 +167,7 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
         <?php endforeach ?>
     </div>
     <div id="new_user" style="display: none;">
-        <div class="row">Введите данные нового пользователя:</div>
+        <div class="row caption">Введите данные нового пользователя:</div>
         <div class="row">
             <div class="id">&nbsp;</div>
             <input type="text" class="name"/>
@@ -179,7 +178,7 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
                     <option value="<?php echo $city->id ?>"><?php echo htmlspecialchars($city->name, ENT_QUOTES, DOCUMENT_ENCODING) ?></option>
                 <?php endforeach ?>
             </select>
-            <button class="delete">Создать</button>
+            <input type="button" class="delete" value="Создать"/>
         </div>
     </div>
     <button id="create_user">СОЗДАТЬ ПОЛЬЗОВАТЕЛЯ</button>
