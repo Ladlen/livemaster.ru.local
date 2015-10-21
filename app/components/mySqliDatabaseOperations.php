@@ -25,7 +25,7 @@ class mySqliDatabaseOperations implements DatabaseOperations
             {
                 throw new Exception('Не могу выбрать базу данных : ' . mysqli_error(self::$mySqlLink));
             }
-            mysqli_set_charset(self::$mySqlLink, 'cp1251');
+            mysqli_set_charset(self::$mySqlLink, DOCUMENT_ENCODING);
         }
     }
 

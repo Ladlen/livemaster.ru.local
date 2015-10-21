@@ -11,5 +11,7 @@ define('MYSQL_DB', 'user_list');
 
 define('DATABASE_CLASS', DATABASE . 'DatabaseOperations');
 
+define('DOCUMENT_ENCODING', 'cp1251');
+
 // Переключение отладочного режима.
 define('DEBUG', true);

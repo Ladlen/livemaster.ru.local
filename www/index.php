@@ -32,6 +32,9 @@ ALTER TABLE `users` ADD CONSTRAINT `user_city_id` FOREIGN KEY (`city_id`) REFERE
 
 */
 
+define('APP_DIR', dirname(__FILE__) . '/../app/');
+require_once(APP_DIR . 'config.php');
+
 if (DEBUG)
 {
     error_reporting(E_ALL);
@@ -42,10 +45,9 @@ else
     error_reporting(0);
 }
 
-define('APP_DIR', dirname(__FILE__) . '/../app/');
 
-require_once (APP_DIR . 'config.php');
-require_once (APP_DIR . 'controllers/User.php');
+
+require_once(APP_DIR . 'controllers/User.php');
 
 try
 {

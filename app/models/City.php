@@ -1,12 +1,12 @@
 <?php
 
-require_once (APP_DIR . 'components/' . DATABASE_CLASS . '.php');
+require_once(APP_DIR . 'components/' . DATABASE_CLASS . '.php');
 
 /**
-* Class City
-*
-* Содержит данные по городам.
-*/
+ * Class City
+ *
+ * Содержит данные по городам.
+ */
 class City
 {
     /**

@@ -19,9 +19,18 @@
                         }
                         else
                         {
-                            var content = $("#list .row[data-id=" + id + "] div." + name).text(value);
-                            $("#list .row[data-id=" + id + "] input." + name).text(content);
-                            alert('Произошла ошибка обновления');
+                            //var content = $("#list .row[data-id=" + id + "] div." + name).text(value);
+                            //$("#list .row[data-id=" + id + "] input." + name).text(content);
+                            //$("#list .row[data-id=" + id + "] div." + name).click();
+
+                            var oldValue = $("#list .row[data-id=" + id + "] div." + name).text();
+                            $("#list .row[data-id=" + id + "] input." + name).val(oldValue);
+                            /*$("#list .row[data-id=" + id + "] div." + name).hide();
+                            $("#list .row[data-id=" + id + "] input." + name).show();
+                            $("#list .row[data-id=" + id + "] input." + name).focus();*/
+
+                            var msg = 'Произошла ошибка обновления:\n' + data.messages.join('\n');
+                            alert(msg);
                         }
                     }
                 });
@@ -135,11 +144,11 @@
         <?php endif ?>
         <?php foreach ($model as $user): ?>
             <div class="row" data-id="<?php echo $user->id ?>">
-                <div class="id"><?php echo htmlspecialchars($user->id, ENT_QUOTES, 'cp1251') ?></div><!--
+                <div class="id"><?php echo htmlspecialchars($user->id, ENT_QUOTES, DOCUMENT_ENCODING) ?></div><!--
               --><input type="text" value="<?php echo $user->name ?>" class="name" maxlength="30" style="display:none"/><!--
-              --><div class="name"><?php echo htmlspecialchars($user->name, ENT_QUOTES, 'cp1251') ?></div><!--
+              --><div class="name"><?php echo $user->name ? htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) : '&nbsp;' ?></div><!--
               --><input type="number" min="0" max="255" value="<?php echo $user->age ?>" class="age" maxlength="30" style="display:none"/><!--
-              --><div class="age"><?php echo htmlspecialchars($user->age, ENT_QUOTES, 'cp1251') ?></div><!--
+              --><div class="age"><?php echo htmlspecialchars($user->age, ENT_QUOTES, DOCUMENT_ENCODING) ?></div><!--
               --><div class="city_id"><?php echo ($user->city_id == 0) ? 'Город не выбран' : $user->city_name ?></div><!--
               --><select style="display:none" class="city_id">
                     <option value="0" <?php echo ($user->city_id == 0) ? 'selected="selected"' : ''; ?>>Город не выбран</option>
@@ -149,7 +158,7 @@
                         {
                             echo 'selected="selected"';
                         }
-                        ?>><?php echo htmlspecialchars($city->name, ENT_QUOTES, 'cp1251') ?></option>
+                        ?>><?php echo htmlspecialchars($city->name, ENT_QUOTES, DOCUMENT_ENCODING) ?></option>
                     <?php endforeach ?>
                 </select><!--
                 <input type="text" value="<?php echo $user->city_id ?>" class="city" disabled="disabled"/>
@@ -166,36 +175,12 @@
             <select class="city_id">
                 <option value="0" selected="selected">Город не выбран</option>
                 <?php foreach($cities as $city): ?>
-                    <option value="<?php echo $city->id ?>"><?php echo htmlspecialchars($city->name, ENT_QUOTES, 'cp1251') ?></option>
+                    <option value="<?php echo $city->id ?>"><?php echo htmlspecialchars($city->name, ENT_QUOTES, DOCUMENT_ENCODING) ?></option>
                 <?php endforeach ?>
             </select>
             <button class="delete">Создать</button>
         </div>
     </div>
-
-    <div id="blank-row" style="display: none">
-        <div class="row">
-            <div class="id"></div><!--
-                  --><input type="text" value="" class="name" maxlength="30" style="display:none"/><!--
-                  --><div class="name"></div><!--
-                  --><input type="text" value="" class="age" maxlength="30" style="display:none"/><!--
-                  --><div class="age"></div><!--
-                  --><div class="city_id"></div><!--
-                  --><select style="display:none" class="city_id">
-                <option value="0">Город не выбран</option>
-                <?php foreach($cities as $city): ?>
-                    <option value="<?php echo $city->id ?>" <?php
-                    if($user->city_id == $city->id)
-                    {
-                        echo 'selected="selected"';
-                    }
-                    ?>><?php echo htmlspecialchars($city->name, ENT_QUOTES, 'cp1251') ?></option>
-                <?php endforeach ?>
-            </select><!--
-                  --><input type="button" value="Удалить" class="delete"/>
-        </div>
-    </div>
-
     <button id="create_user">СОЗДАТЬ ПОЛЬЗОВАТЕЛЯ</button>
 </div>
 
