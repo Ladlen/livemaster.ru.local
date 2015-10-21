@@ -47,7 +47,12 @@ class UserController extends Controller
 
         $model = new User();
         $win1251Name = mb_convert_encoding($_REQUEST['name'], DOCUMENT_ENCODING, 'UTF-8');
-        if ($model->createUser($win1251Name, $_REQUEST['age'], $_REQUEST['city']))
+
+        if ($errors = $model->verifyUserInfo(['name' => $win1251Name, 'age' => $_REQUEST['age']]))
+        {
+            $ret = ['success' => false, 'messages' => $errors];
+        }
+        elseif ($model->createUser($win1251Name, $_REQUEST['age'], $_REQUEST['city']))
         {
             $ret['success'] = true;
         }
