@@ -18,7 +18,7 @@ CREATE TABLE users
     `name` varchar(30) NOT NULL,
     -- `age` DATETIME NOT NULL,
     `age` TINYINT unsigned,
-    `city_id` int(11) unsigned,
+    `city_id` int(11) unsigned NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 ) CHARACTER SET cp1251;
 CREATE TABLE cities
