@@ -15,16 +15,6 @@ class City
      */
     public static $tableName = 'cities';
 
-    /**
-    * Конструктор.
-    *
-    * @param int $id идентификатор города
-    *
-    public function __construct($id, $name)
-    {
-
-    }*/
-
     static public function GetAllCities()
     {
         $className = DATABASE_CLASS;
