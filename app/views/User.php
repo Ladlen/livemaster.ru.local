@@ -1,4 +1,5 @@
 <?php
+define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
 #print_r($model);
 ?>
 
@@ -145,11 +146,11 @@
         <?php foreach ($model as $user): ?>
             <div class="row" data-id="<?php echo $user->id ?>">
                 <div class="id"><?php echo htmlspecialchars($user->id, ENT_QUOTES, DOCUMENT_ENCODING) ?></div><!--
-              --><input type="text" value="<?php echo $user->name ?>" class="name" maxlength="30" style="display:none"/><!--
-              --><div class="name"><?php echo $user->name ? htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) : '&nbsp;' ?></div><!--
+              --><input type="text" value="<?php echo htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) ?>" class="name" maxlength="30" style="display:none"/><!--
+              --><div class="name" title="<?php echo CLICK_TO_MOD ?>"><?php echo $user->name ? htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) : '&nbsp;' ?></div><!--
               --><input type="number" min="0" max="255" value="<?php echo $user->age ?>" class="age" maxlength="30" style="display:none"/><!--
-              --><div class="age"><?php echo htmlspecialchars($user->age, ENT_QUOTES, DOCUMENT_ENCODING) ?></div><!--
-              --><div class="city_id"><?php echo ($user->city_id == 0) ? 'Город не выбран' : $user->city_name ?></div><!--
+              --><div class="age" title="<?php echo CLICK_TO_MOD ?>"><?php echo htmlspecialchars($user->age, ENT_QUOTES, DOCUMENT_ENCODING) ?></div><!--
+              --><div class="city_id" title="<?php echo CLICK_TO_MOD ?>"><?php echo ($user->city_id == 0) ? 'Город не выбран' : $user->city_name ?></div><!--
               --><select style="display:none" class="city_id">
                     <option value="0" <?php echo ($user->city_id == 0) ? 'selected="selected"' : ''; ?>>Город не выбран</option>
                     <?php foreach($cities as $city): ?>

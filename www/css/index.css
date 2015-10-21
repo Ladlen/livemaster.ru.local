@@ -16,7 +16,7 @@ html, body {
     min-width: 300px;
 }
 
-#list .id, #header .id {
+#list .id, #header .id, #list .age, #header .age, #list .delete, #header .delete {
     text-align: center;
 }
 
@@ -53,4 +53,8 @@ html, body {
 #new_user .row {
     color: red;
     text-align: center;
+}
+
+#list .name:hover, #list .age:hover, #list .city_id:hover {
+    background-color:beige;
 }
