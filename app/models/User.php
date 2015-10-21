@@ -11,24 +11,10 @@ require_once (APP_DIR . 'components/' . DATABASE_CLASS . '.php');
 class User
 {
     /**
-     * @var int
+     * Информация о пользователе.
+     * @var
      */
-    public $id;
-
-    /**
-     * @var string
-     */
-    public $name;
-
-    /**
-     * @var int
-     */
-    public $age;
-
-    /**
-     * @var City
-     */
-    public $city;
+    public $userInfo;
 
     /**
      * Название таблицы в БД.
@@ -43,9 +29,12 @@ class User
      */
     public function __construct($id = null)
     {
-        $className = DATABASE_CLASS;
-        $db = new $className;
-        $res = $db->selectQuery('SELECT * FROM ' . self::$tableName . ' WHERE id=%s', $id);
+        if ($id)
+        {
+            $className = DATABASE_CLASS;
+            $db = new $className;
+            $this->userInfo = $db->selectQuery('SELECT * FROM ' . self::$tableName . ' WHERE id=%s', $id);
+        }
     }
 
     static public function GetAllUsers()
@@ -61,12 +50,20 @@ class User
         return $res;
     }
 
-    public function updateElement($id, $name, $value)
+    public function updateUser($id, $name, $value)
     {
         $name = str_replace('`', '', $name);
         $className = DATABASE_CLASS;
         $db = new $className;
         $res = $db->query('UPDATE ' . self::$tableName . " SET `$name`=%s WHERE id=%s", $value, $id);
+        return $res;
+    }
+
+    public function createUser($name, $age, $city)
+    {
+        $className = DATABASE_CLASS;
+        $db = new $className;
+        $res = $db->query('INSERT INTO ' . self::$tableName . ' SET name=%s, age=%s, city_id=%s', $name, $age, $city);
         return $res;
     }
 }

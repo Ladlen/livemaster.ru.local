@@ -19,9 +19,24 @@ class UserController extends Controller
 
         $model = new User();
         $win1251Value = mb_convert_encoding($_REQUEST['value'], 'cp1251', 'UTF-8');
-        if ($model->updateElement($_REQUEST['id'], $_REQUEST['name'], $win1251Value))
+        if ($model->updateUser($_REQUEST['id'], $_REQUEST['name'], $win1251Value))
         {
             $ret = ['success' => true, 'value' => $_REQUEST['value']];
+        }
+
+        echo json_encode($ret);
+        exit;
+    }
+
+    public function actionCreateNewUser()
+    {
+        $ret = ['success' => false];
+
+        $model = new User();
+        $win1251Name = mb_convert_encoding($_REQUEST['name'], 'cp1251', 'UTF-8');
+        if ($model->createUser($win1251Name, $_REQUEST['age'], $_REQUEST['city']))
+        {
+            $ret['success'] = true;
         }
 
         echo json_encode($ret);
