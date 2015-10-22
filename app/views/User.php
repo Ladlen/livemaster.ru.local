@@ -62,13 +62,15 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
             }
         }
 
-        $('#list .name, #list .age').click(function () {
+        $('#list div.name, #list div.age').click(function () {
             var theClass = $(this).attr('class');
             var dataId = $(this).parent().attr('data-id');
             $("#list .row[data-id=" + dataId + "] div." + theClass).hide();
             $("#list .row[data-id=" + dataId + "] input." + theClass).show();
             $("#list .row[data-id=" + dataId + "] input." + theClass).focus();
-        }).blur(function () {
+        });
+
+        $('#list input.name, #list input.age').blur(function () {
             var theClass = $(this).attr('class');
             var dataId = $(this).parent().attr('data-id');
             $("#list .row[data-id=" + dataId + "] input." + theClass).hide();
@@ -82,18 +84,26 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
             }
         });
 
-        $('#list .city_id').click(function () {
+        $('#list input.age').keyup(function () {
+            if (/\D/g.test(this.value)) {
+                // Filter non-digits from input value.
+                this.value = this.value.replace(/\D/g, '');
+            }
+        });
+
+        $('#list div.city_id').click(function () {
             var dataId = $(this).parent().attr('data-id');
             $("#list .row[data-id=" + dataId + "] div.city_id").hide();
             $("#list .row[data-id=" + dataId + "] select.city_id").show();
             $("#list .row[data-id=" + dataId + "] select.city_id").focus();
-        }).blur(function () {
+        });
+        $('#list select.city_id').blur(function () {
             var theClass = $(this).attr('class');
             var dataId = $(this).parent().attr('data-id');
             $("#list .row[data-id=" + dataId + "] select.city_id").hide();
             $("#list .row[data-id=" + dataId + "] div.city_id").show();
             userList.updateCity(theClass, $(this).val(), dataId);
-        }).keyup(function (e) {
+        }).keydown(function (e) {
             if (e.keyCode == 13) {
                 var dataId = $(this).parent().attr('data-id');
                 $("#list .row[data-id=" + dataId + "] select.city_id").blur();
@@ -102,6 +112,7 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
 
         $('#create_user').click(function () {
             $("#new_user").show();
+            $("#create_user").hide();
         });
 
         $('#new_user .delete').click(function () {
@@ -147,7 +158,7 @@ define('CLICK_TO_MOD', 'Нажмите чтобы редактировать');
                 <div class="id"><?php echo htmlspecialchars($user->id, ENT_QUOTES, DOCUMENT_ENCODING) ?></div><!--
               --><input type="text" value="<?php echo htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) ?>" class="name" maxlength="30" style="display:none"/><!--
               --><div class="name" title="<?php echo CLICK_TO_MOD ?>"><?php echo $user->name ? htmlspecialchars($user->name, ENT_QUOTES, DOCUMENT_ENCODING) : '&nbsp;' ?></div><!--
-              --><input type="text" value="<?php echo $user->age ?>" class="age" maxlength="30" style="display:none"/><!--
+              --><input type="text" value="<?php echo $user->age ?>" class="age" maxlength="3" style="display:none"/><!--
               --><div class="age" title="<?php echo CLICK_TO_MOD ?>"><?php echo htmlspecialchars($user->age, ENT_QUOTES, DOCUMENT_ENCODING) ?></div><!--
               --><div class="city_id" title="<?php echo CLICK_TO_MOD ?>"><?php echo ($user->city_id == 0) ? 'Город не выбран' : $user->city_name ?></div><!--
               --><select style="display:none" class="city_id">

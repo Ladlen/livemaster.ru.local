@@ -15,7 +15,7 @@ class mySqliDatabaseOperations implements DatabaseOperations
     {
         if (is_null(self::$mySqlLink))
         {
-            self::$mySqlLink = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+            self::$mySqlLink = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
             if (mysqli_connect_errno())
             {
                 throw new Exception('Ќе установлено соединение с базой данных : ' . mysqli_error(self::$mySqlLink));

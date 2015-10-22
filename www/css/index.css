@@ -73,4 +73,5 @@ html, body {
 
 #list .name:hover, #list .age:hover, #list .city_id:hover {
     background-color:beige;
+    cursor: pointer;
 }
